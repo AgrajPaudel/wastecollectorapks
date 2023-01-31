@@ -38,4 +38,12 @@ class AuthService implements AuthProvider {
   @override
   Future<void> sendPasswordReset({required String toEmail}) =>
       provider.sendPasswordReset(toEmail: toEmail);
+
+  @override
+  Future<AuthUser> createUserwithphone({
+    required String phone_number,
+    required String password,
+  }) =>
+      provider.createUserwithphone(
+          password: password, phone_number: phone_number);
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wastecollector/constants/routes.dart';
 import 'package:wastecollector/services/auth/auth_exceptions.dart';
 import 'package:wastecollector/utilities/errordialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,27 +9,33 @@ import 'package:wastecollector/services/auth/bloc/auth_state.dart';
 import 'package:wastecollector/services/auth/bloc/auth_events.dart';
 import 'package:wastecollector/utilities/genericdialog.dart';
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+class Haulers_RegisterView extends StatefulWidget {
+  const Haulers_RegisterView({Key? key}) : super(key: key);
 
   @override
-  _RegisterViewState createState() => _RegisterViewState();
+  _Haulers_registerviewstate createState() => _Haulers_registerviewstate();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _Haulers_registerviewstate extends State<Haulers_RegisterView> {
   late final TextEditingController _email;
   var data;
   late final TextEditingController _password;
-  late final TextEditingController _number;
-  late final TextEditingController _name;
+  late final TextEditingController _key, _name;
 
-  adddata({required email, required number, required password, required name}) {
+  adddata(
+      {required email,
+      required employee_id,
+      required password,
+      required name}) {
     Map<String, dynamic> demodata = {
       'email': email,
-      'number': number,
+      'employee id': employee_id,
       'password': password,
       'name': name,
     };
+    CollectionReference register = FirebaseFirestore.instance
+        .collection('list_of_employees(with accounts)');
+    register.add(demodata);
     Map<String, dynamic> demodata2 = {
       'city': null,
       'latitude': null,
@@ -38,37 +45,40 @@ class _RegisterViewState extends State<RegisterView> {
       'unscheduled_request': null,
       'vehicle': null
     };
-
-    CollectionReference register =
-        FirebaseFirestore.instance.collection('numbers');
     CollectionReference unscheduled_register =
         FirebaseFirestore.instance.collection('unscheduled_collection');
     unscheduled_register.doc(email).set(demodata2);
-    register.add(demodata);
   }
 
   previous_account_number_add(
-      {required String num, required String name, required String email}) {
+      {required String employee_id,
+      required String name,
+      required String email}) {
+    Map<String, dynamic> demodata = {
+      'employee id': employee_id,
+      'name': name,
+    };
     CollectionReference register =
-        FirebaseFirestore.instance.collection('old_accounts');
-    register.doc(num).set({
+        FirebaseFirestore.instance.collection('old_accounts_of_haulers');
+    register.doc(employee_id).set({
       'name': name,
       'email': email,
     });
   }
 
-  Future<int> previous_account_number_check({required String num}) async {
+  Future<int> previous_account_number_check(
+      {required String employee_id}) async {
     int count = -1;
     var data;
     CollectionReference list =
-        FirebaseFirestore.instance.collection('old_accounts');
+        FirebaseFirestore.instance.collection('old_accounts_of_haulers');
     QuerySnapshot querySnapshot = await list.get();
     final l = querySnapshot.docs.length;
     for (int i = 0; i < l; i++) {
       data = querySnapshot.docs[i].data();
-      print(data['number'].toString());
+      print(data['employee id'].toString());
 
-      if (data['number'].toString() == num.toString()) {
+      if (data['employee id'].toString() == employee_id.toString()) {
         print('${num} exists');
         count = i;
       } else {
@@ -78,21 +88,22 @@ class _RegisterViewState extends State<RegisterView> {
     return count;
   }
 
-  makeaccount({required String num, required String name}) async {
+  makeaccount({required String employee_id, required String name}) async {
     int count = -1;
     var data;
-    int ch = await previous_account_number_check(num: num);
     bool namecheck = false;
+    int ch = await previous_account_number_check(employee_id: employee_id);
 
     if (ch == -1) {
-      CollectionReference list = FirebaseFirestore.instance.collection('list');
+      CollectionReference list =
+          FirebaseFirestore.instance.collection('list_of_employees');
       QuerySnapshot querySnapshot = await list.get(); //gets document for query
       final l = querySnapshot.docs.length; //used to find length of data
       for (int i = 0; i < l; i++) {
         data = querySnapshot.docs[i].data();
-        print(data['number'].toString());
+        print(data['employee id'].toString());
         //converts only the data at number field to string.
-        if (data['number'].toString() == num.toString()) {
+        if (data['employee id'].toString() == employee_id.toString()) {
           print('${num} exists');
           count = i;
           if (data['name'].toString() == name.toString()) {
@@ -108,15 +119,15 @@ class _RegisterViewState extends State<RegisterView> {
           querySnapshot.docs[count].reference.delete(); //deletes the data
           adddata(
               email: _email.text,
-              number: _number.text,
+              employee_id: _key.text,
               password: _password.text,
               name: _name.text);
           previous_account_number_add(
-              num: _number.text, name: _name.text, email: _email.text);
+              employee_id: _key.text, name: _name.text, email: _email.text);
           context
               .read<AuthBloc>()
               .add(AuthEventRegister(_email.text, _password.text));
-          addressdb(email: _email.text, number: _number.text);
+          addressdb(email: _email.text, number: _key.text);
         } else {
           Showgenericdialog(
               context: context,
@@ -163,9 +174,9 @@ class _RegisterViewState extends State<RegisterView> {
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
-    _number = TextEditingController();
+
+    _key = TextEditingController();
     _name = TextEditingController();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -174,8 +185,8 @@ class _RegisterViewState extends State<RegisterView> {
     _email.dispose();
     _name.dispose();
     _password.dispose();
-    _number.dispose();
-    // TODO: implement dispose
+
+    _key.dispose();
     super.dispose();
   }
 
@@ -183,7 +194,6 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
-        //exception handling.
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordAuthException) {
             await ShowErrorDialog(context, 'Weak Password.');
@@ -198,11 +208,11 @@ class _RegisterViewState extends State<RegisterView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Registration"),
+          title: const Text("Hauler Registration"),
           actions: [
             IconButton(
               onPressed: () async {
-                context.read<AuthBloc>().add(const AuthEventHaulerview());
+                context.read<AuthBloc>().add(const AuthEventShouldRegister());
               },
               icon: const Icon(Icons.swap_horiz_sharp),
             ),
@@ -242,13 +252,13 @@ class _RegisterViewState extends State<RegisterView> {
                     hintText: 'Enter name',
                   )),
               TextField(
-                controller: _number,
+                controller: _key,
                 enableSuggestions: false,
                 autocorrect: false,
                 obscureText: false,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  hintText: 'Enter phone number',
+                  hintText: 'Enter employee id number',
                 ),
               ),
               Center(
@@ -260,17 +270,18 @@ class _RegisterViewState extends State<RegisterView> {
                         final name = _name.text;
                         final email = _email.text;
                         final password = _password.text;
-                        if (_number.text != null) {
-                          print(_number.text);
-
-                          makeaccount(num: _number.text, name: _name.text);
+                        if (_key.text != null) {
+                          print(_key.text);
+                          makeaccount(employee_id: _key.text, name: _name.text);
                         }
                       },
                       child: const Text('Register'),
                     ),
                     TextButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(const AuthEventLogOut());
+                        context
+                            .read<AuthBloc>()
+                            .add(const AuthEventHaulerLogin());
                       },
                       child: const Text('Already registered?'),
                     ),
@@ -284,7 +295,6 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 }
-
 
 
 

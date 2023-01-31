@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "857421074798",
+    "firebase_url": "https://wastecollectornepal-default-rtdb.firebaseio.com",
     "project_id": "wastecollectornepal",
     "storage_bucket": "wastecollectornepal.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "857421074798-d7f1dl3lll6lvi89ra59j9j3jq8mec25.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "857421074798-36jhqq5cv3bm2edkhjsqql8frabvcgbn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wastecollectornepal.wastecollector"
+              }
             }
           ]
         }

@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'auth_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'auth_provider.dart';
@@ -17,6 +19,34 @@ class FireBaseAuthProvider implements AuthProvider {
         email: email,
         password: password, //*might need changes here too
       );
+      final user = currentUser;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInAuthException();
+      }
+    } on FirebaseAuthException catch (error) {
+      print(error.code);
+      if (error.code == 'weak-password') {
+        throw WeakPasswordAuthException();
+      } else if (error.code == 'invalid-email') {
+        throw InvalidEmailAuthException();
+      } else if (error.code == 'email-already-in-use') {
+        throw EmailAlreadyInUseAuthException();
+      } else {
+        throw GeneralAuthException();
+      }
+    } catch (_) {
+      throw GeneralAuthException();
+    }
+  }
+
+  @override
+  Future<AuthUser> createUserwithphone({
+    required String phone_number,
+    required String password,
+  }) async {
+    try {
       final user = currentUser;
       if (user != null) {
         return user;
@@ -104,6 +134,23 @@ class FireBaseAuthProvider implements AuthProvider {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
+    // NotificationSettings settings = await firebaseMessaging.requestPermission(
+    //     alert: true,
+    //     announcement: false,
+    //     badge: true,
+    //     carPlay: false,
+    //     criticalAlert: false,
+    //     provisional: false,
+    //     sound: true);
+    // print('permission=' + settings.authorizationStatus.toString());
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   if (message.notification != null) {
+    //     print('message came!');
+    //   }
+    // });
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
   @override
@@ -125,3 +172,12 @@ class FireBaseAuthProvider implements AuthProvider {
     }
   }
 }
+
+// //bg message handler
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   await Firebase.initializeApp();
+
+//   print("Handling a background message: ${message.messageId}");
+// }

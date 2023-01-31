@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:wastecollector/services/auth/bloc/auth_state.dart';
 
 @immutable
 abstract class AuthEvent {
@@ -36,4 +37,71 @@ class AuthEventForgotPassword extends AuthEvent {
 
 class AuthEventLogOut extends AuthEvent {
   const AuthEventLogOut();
+}
+//from here on its haulers
+
+class AuthEventHaulerview extends AuthEvent {
+  const AuthEventHaulerview();
+}
+
+class AuthEventHaulerLogin extends AuthEvent {
+  const AuthEventHaulerLogin();
+}
+
+class AuthEventHaulerLoggedin extends AuthEvent {
+  final String email;
+  final String password;
+  const AuthEventHaulerLoggedin(this.email, this.password);
+}
+
+class AuthEventClienttoHaulerSwitch extends AuthEvent {
+  const AuthEventClienttoHaulerSwitch();
+}
+
+class AuthEventHaulertoClientSwitch extends AuthEvent {
+  const AuthEventHaulertoClientSwitch();
+}
+
+class AuthEventHaulerBack extends AuthEvent {
+  const AuthEventHaulerBack();
+}
+
+class AuthEventHaulerCollect extends AuthEvent {
+  const AuthEventHaulerCollect();
+}
+
+class AuthEventHaulerCollection extends AuthEvent {
+  const AuthEventHaulerCollection();
+}
+
+class Autheventchooser extends AuthEvent {
+  const Autheventchooser();
+}
+
+class AuthEventScheduledCollection extends AuthEvent {
+  const AuthEventScheduledCollection();
+}
+
+class AuthEventUnScheduledCollection extends AuthEvent {
+  const AuthEventUnScheduledCollection();
+}
+
+class AuthEventUnscheduledCollectionList extends AuthEvent {
+  const AuthEventUnscheduledCollectionList();
+}
+
+class AuthEventInsideUnscheduledCollection extends AuthEvent {
+  const AuthEventInsideUnscheduledCollection();
+}
+
+class AuthEventInsideCompensatoryCollection extends AuthEvent {
+  const AuthEventInsideCompensatoryCollection();
+}
+
+class AuthEventCompensatoryChooser extends AuthEvent {
+  const AuthEventCompensatoryChooser();
+}
+
+class AuthEventLoginpage extends AuthEvent {
+  const AuthEventLoginpage();
 }

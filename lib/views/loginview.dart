@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wastecollector/services/auth/auth_exceptions.dart';
 import 'package:wastecollector/services/auth/bloc/auth_bloc.dart';
@@ -54,6 +55,14 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Login'),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                context.read<AuthBloc>().add(const AuthEventHaulerLogin());
+              },
+              icon: const Icon(Icons.swap_horiz_sharp),
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -66,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    hintText: 'Enter email',
+                    hintText: 'Enter email/phone number',
                   )),
               TextField(
                 controller: _password,
@@ -82,12 +91,29 @@ class _LoginViewState extends State<LoginView> {
                   final email = _email.text;
                   eemail = _email.text;
                   final password = _password.text;
-                  context.read<AuthBloc>().add(
-                        AuthEventLogIn(
-                          email,
-                          password, //*add extra credentials here plz.
-                        ),
-                      );
+                  if (email.endsWith('@gmail.com')) {
+                    context.read<AuthBloc>().add(
+                          AuthEventLogIn(
+                            email,
+                            password, //*add extra credentials here plz.
+                          ),
+                        );
+                  } else {
+                    CollectionReference number_check =
+                        FirebaseFirestore.instance.collection('old_accounts');
+                    DocumentSnapshot? data =
+                        await number_check.doc(email).get();
+                    if (data.exists) {
+                      context.read<AuthBloc>().add(
+                            AuthEventHaulerLoggedin(
+                              data['email'].toString(),
+                              password, //*add extra credentials here plz.
+                            ),
+                          );
+                    } else {
+                      ShowErrorDialog(context, 'Wrong number');
+                    }
+                  }
                 },
                 child: const Text('Login'),
               ),
