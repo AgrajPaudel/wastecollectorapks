@@ -19,6 +19,7 @@ import 'package:wastecollector/haulers_views/scheduled_collection.dart';
 import 'package:wastecollector/haulers_views/unscheduled_collection_hauler.dart';
 import 'package:wastecollector/haulers_views/unscheduled_collection_list.dart';
 import 'package:wastecollector/haulers_views/unscheduled_inside_collection.dart';
+import 'package:wastecollector/haulers_views/update_profile.dart';
 import 'package:wastecollector/helpers/loading/loadingscreen.dart';
 import 'package:wastecollector/services/auth/auth_service.dart';
 import 'package:wastecollector/services/auth/bloc/auth_bloc.dart';
@@ -33,6 +34,7 @@ import 'package:wastecollector/views/notes/dashboard.dart';
 import 'package:wastecollector/views/registerview.dart';
 import 'package:wastecollector/views/schedule.dart';
 import 'package:wastecollector/views/unscheduled_collection_client.dart';
+import 'package:wastecollector/views/update_profile_client.dart';
 import 'views/loginview.dart';
 import 'views/verifyemailview.dart';
 import 'views/notes/complainsview.dart';
@@ -326,6 +328,8 @@ void main() async {
       scheduleroute: (context) => const Schedule(),
       unscheduledclientroute: (context) =>
           const Clients_unScheduledCollection(),
+      haulerprofileupdateroute: (context) => const Profile_update(),
+      clientprofileupdateroute: (context) => const Profile_update_client(),
     },
   ));
 }

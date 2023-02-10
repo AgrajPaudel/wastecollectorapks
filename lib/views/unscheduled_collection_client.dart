@@ -71,43 +71,58 @@ class Clients_unScheduledCollectionviewState
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                'Current request:',
-                style: const TextStyle(fontSize: 20),
-              ),
-              data!['unscheduled_request'] == 'requested'
-                  ? Column(
-                      children: [
-                        ListTile(
-                          subtitle: Text('Price: ' +
-                              data!['price'].toString() +
-                              '\n' +
-                              'Vehicle: ' +
-                              data!['vehicle'] +
-                              '\n' +
-                              'Time: ' +
-                              data!['time']),
-                          onTap: () {},
-                        ),
-                        TextButton(
-                            onPressed: () async {
-                              unscheduled_collection
-                                  .doc(emailid)
-                                  .update({'unscheduled_request': null});
-                              Showgenericdialog(
-                                  context: context,
-                                  title: 'Request deleted',
-                                  content:
-                                      'Your request has been deleted. Please reload the page.',
-                                  optionBuilder: () => {'OK': null});
-                            },
-                            child: const Text('Cancel request')),
-                      ],
-                    )
-                  : Text('none'),
-              Container(
-                height: 10,
-                width: 10,
+              Column(
+                children: [
+                  Text(
+                    'Current request:',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  data!['unscheduled_request'] == 'requested'
+                      ? Column(
+                          children: [
+                            ListTile(
+                              subtitle: Text('Price: ' +
+                                  data!['price'].toString() +
+                                  '\n' +
+                                  'Vehicle: ' +
+                                  data!['vehicle'] +
+                                  '\n' +
+                                  'Time: ' +
+                                  data!['time']),
+                              onTap: () {},
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.black,
+                                foregroundColor: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                              ),
+                              onPressed: () async {
+                                unscheduled_collection
+                                    .doc(emailid)
+                                    .update({'unscheduled_request': null});
+                                Showgenericdialog(
+                                    context: context,
+                                    title: 'Request deleted',
+                                    content:
+                                        'Your request has been deleted. Please reload the page.',
+                                    optionBuilder: () => {'OK': null});
+                              },
+                              child: const Text(
+                                'Cancel Request',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ],
+                        )
+                      : Text('none'),
+                  Container(
+                    height: 30,
+                    width: 30,
+                  ),
+                ],
               ),
               Text(
                 'New Request:',
@@ -120,102 +135,175 @@ class Clients_unScheduledCollectionviewState
               Center(
                   child: Column(children: [
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedVehicle = 'Mini-Truck';
-                      _price = 300;
-                    });
-                  },
-                  child: const Text('Mini-Truck'),
+                SizedBox(
+                  height: 150,
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10),
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+                              foregroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _selectedVehicle = 'Mini-Truck';
+                                _price = 300;
+                              });
+                            },
+                            child: const Text('Mini-Truck',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+                              foregroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _selectedVehicle = 'Dumptruck';
+                                _price = 600;
+                              });
+                            },
+                            child: const Text('Dumptruck',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+                              foregroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _selectedVehicle = 'Cart';
+                                _price = 100;
+                              });
+                            },
+                            child: const Text('Cart',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ]),
+                  ),
                 ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedVehicle = 'Dumptruck';
-                      _price = 600;
-                    });
-                  },
-                  child: const Text('Dumptruck'),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedVehicle = 'Cart';
-                      _price = 100;
-                    });
-                  },
-                  child: const Text('Cart'),
-                ),
-                SizedBox(height: 20),
                 Text(
                   'Price: \Rs$_price',
                   style: TextStyle(fontSize: 20),
                 ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _incrementPrice,
-                  child: Icon(Icons.add),
+                SizedBox(
+                  height: 100,
+                  width: 125,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 0,
+                            crossAxisSpacing: 10),
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+                              foregroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: _incrementPrice,
+                            child: const Text('+',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.black,
+                              foregroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: _decrementPrice,
+                            child: const Text('-',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ]),
+                  ),
                 ),
-                SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: _decrementPrice,
-                  child: Icon(Icons.remove),
-                ),
-                TextButton(
-                    onPressed: () async {
-                      if (_price != 0 || _selectedVehicle != '') {
-                        var data;
-                        QuerySnapshot firstquery = await address.get();
-                        for (int i = 0; i < firstquery.docs.length; i++) {
-                          data = firstquery.docs[i].data();
-                          if (data['email'] == emailid) {
-                            number = data['number'];
-                            latlng_address =
-                                LatLng(data['latitude'], data['longitude']);
-                            location = data['address'];
-                          }
+                  style: ElevatedButton.styleFrom(
+                    shadowColor: Colors.black,
+                    foregroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_price != 0 || _selectedVehicle != '') {
+                      var data;
+                      QuerySnapshot firstquery = await address.get();
+                      for (int i = 0; i < firstquery.docs.length; i++) {
+                        data = firstquery.docs[i].data();
+                        if (data['email'] == emailid) {
+                          number = data['number'];
+                          latlng_address =
+                              LatLng(data['latitude'], data['longitude']);
+                          location = data['address'];
                         }
-                        if (location == null) {
-                          ShowErrorDialog(
-                              context, 'Please choose your city first');
-                        } else if (latlng_address == null) {
-                          ShowErrorDialog(context,
-                              'Please Enter Your Address on map first');
-                        }
-                        if (data['unscheduled_request'] != null &&
-                            data['unscheduled_request'] != 'requested') {
-                          ShowErrorDialog(context,
-                              'You cannot request for new collectoin when a collection is undergoing.');
-                        } else {
-                          unscheduled_collection.doc(emailid).set({
-                            'unscheduled_request': 'requested',
-                            'city': location,
-                            'latitude': latlng_address!.latitude,
-                            'longitude': latlng_address!.longitude,
-                            'price': _price,
-                            'number': number,
-                            'vehicle': _selectedVehicle,
-                            'time': DateTime.now().toString(),
-                            'last hauler': data['last hauler'],
-                          });
-                          Showgenericdialog(
-                              context: context,
-                              title: 'Request Successful',
-                              content:
-                                  'Your request has been successfully sent.',
-                              optionBuilder: () => {
-                                    'OK': null,
-                                  });
-                        }
-                      } else {
-                        ShowErrorDialog(context,
-                            'Please set appropriate price or choose correct vehicle.');
                       }
-                    },
-                    child: const Text('Confirm Request'))
+                      if (location == null) {
+                        ShowErrorDialog(
+                            context, 'Please choose your city first');
+                      } else if (latlng_address == null) {
+                        ShowErrorDialog(
+                            context, 'Please Enter Your Address on map first');
+                      }
+                      if (data['unscheduled_request'] != null &&
+                          data['unscheduled_request'] != 'requested') {
+                        ShowErrorDialog(context,
+                            'You cannot request for new collectoin when a collection is undergoing.');
+                      } else {
+                        unscheduled_collection.doc(emailid).set({
+                          'unscheduled_request': 'requested',
+                          'city': location,
+                          'latitude': latlng_address!.latitude,
+                          'longitude': latlng_address!.longitude,
+                          'price': _price,
+                          'number': number,
+                          'vehicle': _selectedVehicle,
+                          'time': DateTime.now().toString(),
+                          'last hauler': data['last hauler'],
+                        });
+                        Showgenericdialog(
+                            context: context,
+                            title: 'Request Successful',
+                            content: 'Your request has been successfully sent.',
+                            optionBuilder: () => {
+                                  'OK': null,
+                                });
+                      }
+                    } else {
+                      ShowErrorDialog(context,
+                          'Please set appropriate price or choose correct vehicle.');
+                    }
+                  },
+                  child: const Text(
+                    'Confirm Request',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               ]))
             ],
           ),

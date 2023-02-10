@@ -95,6 +95,12 @@ flutter:
   assets:
     - assets/marker.png
     - assets/marker1.png
+    - assets/schedule.jpg
+    - assets/unscheduled.jpg
+    - assets/addressonmap.jpg
+    - assets/login.jpg
+    - assets/collection.jpg
+    - assets/complaints.png
     
   
   # An image asset can refer to one or more resolution-specific "variants", see

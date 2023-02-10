@@ -1,0 +1,15 @@
+all buttons rounded edge and elevated. done
+in dashboard:
+    write client or hauler dashboard done
+in map.dart:
+    save button on top done
+    choose button below done
+in enter credentials:
+    city and ward number take full size, better borders done?
+in complaints and queries:
+    send button below done
+in unscheduled collection: done
+    price: + - side by side not up down
+    vehicle type: side by side
+    current and new requests both are cards/compartments
+

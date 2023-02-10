@@ -106,59 +106,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Complaints'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              final text = _textcontroller.text;
-              if (_note == null || text.isEmpty) {
-                await CantShareEMptyNoteDialog(context);
-              } else {
-                String address_to_be_taken, ward;
-                var data;
-                CollectionReference complains =
-                    FirebaseFirestore.instance.collection('Complaints');
-                String a = await docidfinder(email_id: emailid);
-                CollectionReference address =
-                    FirebaseFirestore.instance.collection('addresses');
-                QuerySnapshot querysnapshot = await address.get();
-                DateTime now = DateTime.now();
-                DateTime date = DateTime(now.year, now.month, now.day);
-                for (int i = 0; i < querysnapshot.docs.length; i++) {
-                  data = querysnapshot.docs[i].data();
-                  if (data['email'].toString() == emailid) {
-                    print(a);
-                    if (data['address'] != null &&
-                        data['ward number'] != null) {
-                      address_to_be_taken = data['address'].toString();
-                      ward = data['ward number'].toString();
-                      print(ward);
-                      print(address_to_be_taken);
-                      complains.doc(a).update({
-                        'email': emailid,
-                        'address': address_to_be_taken,
-                        'complain': text,
-                        'ward': ward,
-                        'date': date.toString(),
-                      });
-                      return Showgenericdialog<void>(
-                        context: context,
-                        title: 'Complaint Update',
-                        content: 'Complaint successfully sent.',
-                        optionBuilder: () => {
-                          'Cancel': false,
-                        },
-                      );
-                    } else {
-                      ShowErrorDialog(
-                          context, 'Please pick your address first');
-                    }
-                  }
-                }
-              }
-            },
-            icon: const Text('Send'),
-          ) //share button
-        ],
+        actions: [],
       ),
       body: FutureBuilder(
         future: CreateNewNotesorGetExistingNotes(context),
@@ -168,54 +116,6 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
               setuptextcontrollinglistener(); //autosaves
               return Column(
                 children: [
-                  TextButton(
-                      onPressed: () async {
-                        CollectionReference address =
-                            FirebaseFirestore.instance.collection('addresses');
-                        QuerySnapshot querysnapshot = await address.get();
-                        var data;
-                        String address_to_be_taken, ward;
-                        for (int i = 0; i < querysnapshot.docs.length; i++) {
-                          data = querysnapshot.docs[i].data();
-                          String a = await docid_finder(email_id: emailid);
-                          print(emailid);
-                          if (data['email'].toString() == emailid) {
-                            if (data['address'] != null &&
-                                data['ward number'] != null) {
-                              if (data['state'] != 'uncollected') {
-                                address.doc(a).update({
-                                  'state': 'uncollected',
-                                });
-                                return Showgenericdialog<void>(
-                                  context: context,
-                                  title: 'Complaint Update',
-                                  content: 'State updated.',
-                                  optionBuilder: () => {
-                                    'OK': false,
-                                  },
-                                );
-                              } else {
-                                address.doc(a).update({
-                                  'state': null,
-                                });
-                                return Showgenericdialog<void>(
-                                  context: context,
-                                  title: 'Complaint Update',
-                                  content: 'State turned back to null.',
-                                  optionBuilder: () => {
-                                    'OK': false,
-                                  },
-                                );
-                              }
-                            } else if (data['state'] == 'uncollected') {
-                              ShowErrorDialog(
-                                  context, 'Please pick your address first');
-                            }
-                          }
-                        }
-                      },
-                      child: const Text(
-                          'Press here to set your collection state to uncollected or undo it.')),
                   TextField(
                     controller: _textcontroller,
                     keyboardType: TextInputType.multiline,
@@ -223,6 +123,67 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                     decoration:
                         const InputDecoration(hintText: 'Enter queries here.'),
                   ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.black,
+                      foregroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final text = _textcontroller.text;
+                      if (_note == null || text.isEmpty) {
+                        await CantShareEMptyNoteDialog(context);
+                      } else {
+                        String address_to_be_taken, ward;
+                        var data;
+                        CollectionReference complains =
+                            FirebaseFirestore.instance.collection('Complaints');
+                        String a = await docidfinder(email_id: emailid);
+                        CollectionReference address =
+                            FirebaseFirestore.instance.collection('addresses');
+                        QuerySnapshot querysnapshot = await address.get();
+                        DateTime now = DateTime.now();
+                        DateTime date = DateTime(now.year, now.month, now.day);
+                        for (int i = 0; i < querysnapshot.docs.length; i++) {
+                          data = querysnapshot.docs[i].data();
+                          if (data['email'].toString() == emailid) {
+                            print(a);
+                            if (data['address'] != null &&
+                                data['ward number'] != null) {
+                              address_to_be_taken = data['address'].toString();
+                              ward = data['ward number'].toString();
+                              print(ward);
+                              print(address_to_be_taken);
+                              complains.doc(a).update({
+                                'email': emailid,
+                                'address': address_to_be_taken,
+                                'complain': text,
+                                'ward': ward,
+                                'date': date.toString(),
+                              });
+                              return Showgenericdialog<void>(
+                                context: context,
+                                title: 'Complaint Update',
+                                content: 'Complaint successfully sent.',
+                                optionBuilder: () => {
+                                  'Cancel': false,
+                                },
+                              );
+                            } else {
+                              ShowErrorDialog(
+                                  context, 'Please pick your address first');
+                            }
+                          }
+                        }
+                      }
+                    },
+                    child: const Text(
+                      'Send Complaints',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               );
             default:

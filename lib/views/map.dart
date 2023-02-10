@@ -96,20 +96,6 @@ class _MapuiState extends State<Mapui> {
         title: const Text('Map'),
         actions: [
           IconButton(
-            onPressed: () async {
-              tap = 1;
-              Showgenericdialog(
-                  context: context,
-                  title: 'Mark Address',
-                  content: 'Tap on the map to mark address',
-                  optionBuilder: () => {
-                        'OK': null,
-                      });
-              markermaker();
-            },
-            icon: const Icon(Icons.location_pin),
-          ),
-          IconButton(
               onPressed: () async {
                 CollectionReference unscheduled = FirebaseFirestore.instance
                     .collection('unscheduled_collection');
@@ -155,7 +141,7 @@ class _MapuiState extends State<Mapui> {
       body: Stack(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.77,
             child: MapboxMap(
                 accessToken:
                     'sk.eyJ1IjoiYWdhanBhdWRlbDEiLCJhIjoiY2w5d3lydndhMDJrNjN3cXc3OXlidndyaSJ9.FpDaGLBJmd2D5NwzcYvxnA',
@@ -204,13 +190,47 @@ class _MapuiState extends State<Mapui> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          controller.animateCamera(
-              CameraUpdate.newCameraPosition(_initalcameraposition));
-        },
-        child: const Icon(Icons.my_location),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shadowColor: Colors.black,
+                foregroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              onPressed: () async {
+                tap = 1;
+                Showgenericdialog(
+                    context: context,
+                    title: 'Mark Address',
+                    content: 'Tap on the map to mark address',
+                    optionBuilder: () => {
+                          'OK': null,
+                        });
+                markermaker();
+              },
+              child: const Text(
+                'Start Selection',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            FloatingActionButton(
+              heroTag: "btn1",
+              onPressed: () async {
+                controller.animateCamera(
+                    CameraUpdate.newCameraPosition(_initalcameraposition));
+              },
+              child: const Icon(Icons.my_location),
+            ),
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

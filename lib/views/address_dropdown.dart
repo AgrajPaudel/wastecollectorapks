@@ -14,6 +14,7 @@ class Addressui extends StatefulWidget {
 }
 
 class _AddressuiState extends State<Addressui> {
+  late final TextEditingController _name;
   var value_chosen = null, wards_chosen = null;
   List addresses = [
     'Kathmandu',
@@ -40,6 +41,7 @@ class _AddressuiState extends State<Addressui> {
 
   @override
   void initState() {
+    _name = TextEditingController();
     _notesservice = FirebaseCloudStorage();
     super.initState();
   }
@@ -257,94 +259,110 @@ class _AddressuiState extends State<Addressui> {
       appBar: AppBar(
         title: const Text('Select Address'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
-          DropdownButton(
-            hint: const Text('Choose city'),
-            items: addresses.map((address) {
-              return DropdownMenuItem(
-                value: address,
-                child: Text(address),
-              );
-            }).toList(), //to list to convert iterable to list
-            value: value_chosen,
-            onChanged: (new_value) async {
-              await wardmapper(
-                  city: new_value
-                      .toString()); //async/await required else error due to multiple length of list items
-              setState(() {
-                value_chosen = new_value;
-              });
-            },
-          ),
-          DropdownButton(
-            hint: const Text('Choose ward number'),
-            items: wards.map((wards) {
-              return DropdownMenuItem(
-                value: wards,
-                child: Text(wards),
-              );
-            }).toList(), //to list to convert iterable to list
-            value: wards_chosen,
-            onChanged: (new_value) {
-              setState(() {
-                wards_chosen = new_value;
-              });
-            },
-          ),
-          TextButton(
-            onPressed: () async {
-              String a;
-              if (value_chosen != null &&
-                  (wards_chosen != null && wards_chosen != '0')) {
-                CollectionReference address_add =
-                    FirebaseFirestore.instance.collection('addresses');
-                CollectionReference unscheduled = FirebaseFirestore.instance
-                    .collection('unscheduled_collection');
-                DocumentSnapshot data2;
-                data2 = await unscheduled.doc(emailid).get();
-                a = await docidfinder(email_id: emailid);
-                var data;
-                data = await snapshotfinder(email_id: emailid);
-                print(data['state'].toString());
-                print(data2['unscheduled_request']);
-                if (!data['state'].toString().endsWith('@email.com') &&
-                    !data2['unscheduled_request']
-                        .toString()
-                        .endsWith('@gmail.com')) {
-                  address_add.doc(a).update({
-                    'email': AuthService.firebase().currentUser!.email,
-                    'address': value_chosen,
-                    'ward number': wards_chosen,
-                  });
-                  NotificationApi.resetter();
-                  return Showgenericdialog<void>(
-                    context: context,
-                    title: 'Address Update',
-                    content: 'Address successfully updated.',
-                    optionBuilder: () => {
-                      'OK': false,
-                    },
-                  );
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(children: [
+            // TextField(
+            //     controller: _name,
+            //     enableSuggestions: false,
+            //     autocorrect: false,
+            //     autofocus: true, //keyboard goes to field
+            //     keyboardType: TextInputType.emailAddress,
+            //     decoration: const InputDecoration(
+            //       hintText: 'Change/update name',
+            //     )),
+            DropdownButton(
+              hint: const Text('Choose city'),
+              items: addresses.map((address) {
+                return DropdownMenuItem(
+                  value: address,
+                  child: Text(address),
+                );
+              }).toList(), //to list to convert iterable to list
+              value: value_chosen,
+              onChanged: (new_value) async {
+                await wardmapper(
+                    city: new_value
+                        .toString()); //async/await required else error due to multiple length of list items
+                setState(() {
+                  value_chosen = new_value;
+                });
+              },
+            ),
+            DropdownButton(
+              hint: const Text('Choose ward number'),
+              items: wards.map((wards) {
+                return DropdownMenuItem(
+                  value: wards,
+                  child: Text(wards),
+                );
+              }).toList(), //to list to convert iterable to list
+              value: wards_chosen,
+              onChanged: (new_value) {
+                setState(() {
+                  wards_chosen = new_value;
+                });
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              onPressed: () async {
+                String a;
+                if (value_chosen != null &&
+                    (wards_chosen != null && wards_chosen != '0')) {
+                  CollectionReference address_add =
+                      FirebaseFirestore.instance.collection('addresses');
+                  CollectionReference unscheduled = FirebaseFirestore.instance
+                      .collection('unscheduled_collection');
+                  DocumentSnapshot data2;
+                  data2 = await unscheduled.doc(emailid).get();
+                  a = await docidfinder(email_id: emailid);
+                  var data;
+                  data = await snapshotfinder(email_id: emailid);
+                  print(data['state'].toString());
+                  print(data2['unscheduled_request']);
+                  if (!data['state'].toString().endsWith('@email.com') &&
+                      !data2['unscheduled_request']
+                          .toString()
+                          .endsWith('@gmail.com')) {
+                    address_add.doc(a).update({
+                      'email': AuthService.firebase().currentUser!.email,
+                      'address': value_chosen,
+                      'ward number': wards_chosen,
+                    });
+                    NotificationApi.resetter();
+                    return Showgenericdialog<void>(
+                      context: context,
+                      title: 'Address Update',
+                      content: 'Address successfully updated.',
+                      optionBuilder: () => {
+                        'OK': false,
+                      },
+                    );
+                  } else {
+                    return Showgenericdialog<void>(
+                      context: context,
+                      title: 'Address Update',
+                      content: 'Cannot update address mid collection.',
+                      optionBuilder: () => {
+                        'OK': false,
+                      },
+                    );
+                  }
                 } else {
-                  return Showgenericdialog<void>(
-                    context: context,
-                    title: 'Address Update',
-                    content: 'Cannot update address mid collection.',
-                    optionBuilder: () => {
-                      'OK': false,
-                    },
-                  );
+                  ShowErrorDialog(
+                      context, 'Please choose correct data in all the fields.');
                 }
-              } else {
-                ShowErrorDialog(
-                    context, 'Please choose correct data in all the fields.');
-              }
-            },
-            child: const Text('Save'),
-          ),
-        ]),
+              },
+              child: const Text('Save'),
+            ),
+          ]),
+        ),
       ),
     );
   }

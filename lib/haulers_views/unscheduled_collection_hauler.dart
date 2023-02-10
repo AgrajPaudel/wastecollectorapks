@@ -70,17 +70,21 @@ class Haulers_unScheduledCollectionviewState
                     padding: const EdgeInsets.all(8.0),
                     child: AspectRatio(
                       aspectRatio: 64 / 9,
-                      child: Container(
-                        color: Colors.green[400],
-                        child: TextButton(
-                          onPressed: () async {
-                            context.read<AuthBloc>().add(
-                                const AuthEventUnscheduledCollectionList());
-                          },
-                          child: const Text(
-                            'Client Requests',
-                            style: TextStyle(color: Colors.white),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
+                        ),
+                        onPressed: () async {
+                          context
+                              .read<AuthBloc>()
+                              .add(const AuthEventUnscheduledCollectionList());
+                        },
+                        child: const Text(
+                          'Client Requests',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -96,23 +100,26 @@ class Haulers_unScheduledCollectionviewState
                     padding: const EdgeInsets.all(8.0),
                     child: AspectRatio(
                       aspectRatio: 64 / 9,
-                      child: Container(
-                        color: Colors.green[400],
-                        child: TextButton(
-                          onPressed: () async {
-                            CollectionReference aa = FirebaseFirestore.instance
-                                .collection('addresses');
-                            QuerySnapshot querySnapshot = await aa.get();
-                            holder(
-                                place: 'compensatory',
-                                querySnapshot: querySnapshot);
-                            context.read<AuthBloc>().add(
-                                const AuthEventInsideCompensatoryCollection());
-                          },
-                          child: const Text(
-                            'Compensatory Collection',
-                            style: TextStyle(color: Colors.white),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
+                        ),
+                        onPressed: () async {
+                          CollectionReference aa = FirebaseFirestore.instance
+                              .collection('addresses');
+                          QuerySnapshot querySnapshot = await aa.get();
+                          holder(
+                              place: 'compensatory',
+                              querySnapshot: querySnapshot);
+                          context.read<AuthBloc>().add(
+                              const AuthEventInsideCompensatoryCollection());
+                        },
+                        child: const Text(
+                          'Compensatory Collection',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

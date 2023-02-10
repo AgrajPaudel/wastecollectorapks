@@ -18,11 +18,11 @@ class Listoflocations {
   Listoflocations({required this.area, required this.location});
 }
 
-List<TextButton> areaputter(
+List<ElevatedButton> areaputter(
     {required String x, required BuildContext context, required int a}) {
   final cities = <Listoflocations>[];
-  final buttons = <TextButton>[];
-  final buttons2 = <TextButton>[];
+  final buttons = <ElevatedButton>[];
+  final buttons2 = <ElevatedButton>[];
   if (x == 'Sunday') {
     int i = 0;
     cities.add(
@@ -31,7 +31,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -54,7 +59,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -74,7 +84,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -95,7 +110,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -117,7 +137,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -138,7 +163,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -160,7 +190,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -179,7 +214,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -201,7 +241,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -222,7 +267,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -246,7 +296,12 @@ List<TextButton> areaputter(
     for (i = 0; i < cities.length; i++) {
       final LatLng location = cities[i].location;
       final String place = cities[i].area.toString();
-      buttons.add(TextButton(
+      buttons.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');
@@ -263,7 +318,12 @@ List<TextButton> areaputter(
     for (j; j < cities.length; j++) {
       final LatLng location = cities[j].location;
       final String place = cities[j].area.toString();
-      buttons2.add(TextButton(
+      buttons2.add(ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () async {
             CollectionReference map_address =
                 FirebaseFirestore.instance.collection('addresses');

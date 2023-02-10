@@ -20,57 +20,29 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       appBar: AppBar(
         title: const Text('Verify Email View'),
       ),
-      body: Column(children: [
-        const Text('Verification email will be sent to you.'),
-        const Text('Please verify from your email.....................'),
-        TextButton(
-            onPressed: () {
-              context
-                  .read<AuthBloc>()
-                  .add(const AuthEventSendEmailVerification());
-            },
-            child: const Text('Send Email Verification')),
-        TextButton(
-            onPressed: () async {
-              context.read<AuthBloc>().add(const AuthEventLogOut());
-            },
-            child: const Text('Reload.'))
-      ]),
+      body: Center(
+        child: Column(children: [
+          const Text('Verification email will be sent to you.'),
+          const Text('Please verify from your email.....................'),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              onPressed: () {
+                context
+                    .read<AuthBloc>()
+                    .add(const AuthEventSendEmailVerification());
+              },
+              child: const Text('Send Email Verification')),
+          TextButton(
+              onPressed: () async {
+                context.read<AuthBloc>().add(const AuthEventLogOut());
+              },
+              child: const Text('Reload.'))
+        ]),
+      ),
     );
   }
 }
-
-// class VerifyEmailView extends StatefulWidget {
-//   const VerifyEmailView({Key? key}) : super(key: key);
-
-//   @override
-//   State<VerifyEmailView> createState() => _VerifyEmailViewState();
-// }
-
-// class _VerifyEmailViewState extends State<VerifyEmailView> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Verify Email View'),
-//       ),
-//       body: Column(children: [
-//         const Text('Verification email will be sent to you.'),
-//         const Text('Please verify from your email.....................'),
-//         TextButton(
-//             onPressed: () async {
-//               await AuthService.firebase().sendEmailVerification();
-//             },
-//             child: const Text('Send Email Verification')),
-//         TextButton(
-//             onPressed: () async {
-//               await AuthService.firebase().logOut();
-//               Navigator.of(context)
-//                   .pushNamedAndRemoveUntil(registerroute, (route) => false);
-//             },
-//             child: const Text('Reload'))
-//       ]),
-//     );
-//   }
-// }
-
